@@ -15,6 +15,9 @@ import ru.michael.game.jumper.MyGdxGame;
 public class Branch {
     public static final int BRANCH_HEIGHT = 44;
 
+    private Bird bird;
+    private Nuts nuts;
+    private Ladder ladder;
     private Texture leftBranchTexture, rightBranchTexture;
     private Vector2 leftPosBranch, rightPosBranch;
     private Rectangle leftBoundBranch, rightBoundBranch;
@@ -25,6 +28,22 @@ public class Branch {
         //rand = new Random();
         leftPosBranch = new Vector2(20,y);
         leftBoundBranch = new Rectangle(leftPosBranch.x, leftPosBranch.y, leftBranchTexture.getWidth(), leftBranchTexture.getHeight());
+
+        bird = new Bird(y);
+        nuts = new Nuts(y);
+        ladder = new Ladder(y);
+    }
+
+    public Ladder getLadder(){
+        return ladder;
+    }
+
+    public Bird getBird(){
+        return bird;
+    }
+
+    public Nuts getNuts(){
+        return nuts;
     }
 
     public Vector2 getPosition(){
@@ -39,7 +58,12 @@ public class Branch {
         return player.overlaps(leftBoundBranch);
     }
 
+
+
     public void dispose(){
         leftBranchTexture.dispose();
+        bird.dispose();
+        nuts.dispose();
+        ladder.dispose();
     }
 }

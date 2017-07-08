@@ -21,7 +21,7 @@ public class Ladder {
     public Ladder(float y){
         ladderTexture = new Texture("ladder.png");
         rand = new Random();
-        posLadder = new Vector2(rand.nextInt(MyGdxGame.WIDTH),y);
+        posLadder = new Vector2(rand.nextInt(MyGdxGame.WIDTH),y - ladderTexture.getHeight() + 30);
         boundLadder = new Rectangle(posLadder.x, posLadder.y, ladderTexture.getWidth(), ladderTexture.getHeight());
     }
 
@@ -29,7 +29,7 @@ public class Ladder {
         return posLadder;
     }
 
-    public Texture getLadder(){
+    public Texture getLadderTexture(){
         return ladderTexture;
     }
 

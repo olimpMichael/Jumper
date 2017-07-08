@@ -18,14 +18,14 @@ public class Nuts {
     private Random rand;
     private Rectangle boundNuts;
 
-    public Nuts(){
+    public Nuts(float y){
         nutsTexture = new Texture("nuts.png");
         rand = new Random();
-        posNuts = new Vector2(rand.nextInt(MyGdxGame.WIDTH), rand.nextInt(MyGdxGame.HEIGHT_LEVEL));
+        posNuts = new Vector2(rand.nextInt(MyGdxGame.WIDTH), y + MyGdxGame.HEIGHT_BRANCH + rand.nextInt(MyGdxGame.HEIGHT_LEVEL));
         boundNuts = new Rectangle(posNuts.x, posNuts.y, nutsTexture.getWidth(), nutsTexture.getHeight());
     }
 
-    public Texture getNuts(){
+    public Texture getNutsTexture(){
         return nutsTexture;
     }
 

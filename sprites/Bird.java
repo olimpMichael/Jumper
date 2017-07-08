@@ -23,11 +23,11 @@ public class Bird {
     public Bird(float y){
         birdTexture = new Texture ("bird.png");
         rand = new Random();
-        posBird = new Vector2(rand.nextInt(MyGdxGame.WIDTH), y);
+        posBird = new Vector2(rand.nextInt(MyGdxGame.WIDTH), y + MyGdxGame.HEIGHT_BRANCH);
         boundBird = new Rectangle(posBird.x, posBird.y, birdTexture.getWidth(), birdTexture.getHeight());
     }
 
-    public Texture getBird(){
+    public Texture getBirdTexture(){
         return birdTexture;
     }
 

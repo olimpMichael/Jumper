@@ -23,10 +23,10 @@ public class PlayState extends State {
     private int PADDING_BOTTOM = 60;
 
     private Jumper jumper;
-    private Bird bird;
-    private Nuts nuts;
+    //private Bird bird;
+    //private Nuts nuts;
     //private Branch branch;
-    private Ladder ladder;
+    //private Ladder ladder;
     private Texture bg;
     private int score = 0;
     private BitmapFont scoreFont;
@@ -44,14 +44,14 @@ public class PlayState extends State {
         scoreFont = new BitmapFont();
 
 
-        bird = new Bird(60);
-        nuts = new Nuts();
+        //bird = new Bird(60);
+        //nuts = new Nuts();
         //branch = new Branch(20);
         branches = new Array<Branch>();
         for (int i=0; i < BRANCHES_COUNT; i++){
             branches.add(new Branch(20 + i * (BRANCHAE_SPACING + Branch.BRANCH_HEIGHT)));
         }
-        ladder = new Ladder(60 + 115);
+        //ladder = new Ladder(60 + 115);
     }
 
     @Override
@@ -65,26 +65,28 @@ public class PlayState extends State {
     public void update(float dt) {
         handleInput();
         jumper.update(dt);
+        for (Branch branch : branches) {
+            //Determines collides between jumper and bird
+            if (branch.getBird().collides(jumper.getBounds())) {
+                gsm.set(new PlayState(gsm));
+                return;
+            }
 
-        //Determines collides between jumper and bird
-        if (bird.collides(jumper.getBounds())){
-            gsm.set(new PlayState(gsm));
-        }
+            //Determines collides between jumper and nuts
+            if (branch.getNuts().collides(jumper.getBounds())) {
+                score += 10;
+            }
 
-        //Determines collides between jumper and nuts
-        if (nuts.collides(jumper.getBounds())){
-            score += 10;
-        }
-
-        //Determines collides between jumper and ladders
-        if (ladder.collides(jumper.getBounds())){
-            jumper.climb();
-            //camera.position.y = bird.getPosition().y + 80; // привязка позиции камеры к позиции птицы
-            //Камеру привязываем к белке
-            //Заставляем белку двигаться только вверх.
-            //Рисуем репозицию веток
-            //открепляем камеру от белки
-            //белка двигается как и раньше
+            //Determines collides between jumper and ladders
+            if (branch.getLadder().collides(jumper.getBounds())) {
+                jumper.climb();
+                //camera.position.y = bird.getPosition().y + 80; // привязка позиции камеры к позиции птицы
+                //Камеру привязываем к белке
+                //Заставляем белку двигаться только вверх.
+                //Рисуем репозицию веток
+                //открепляем камеру от белки
+                //белка двигается как и раньше
+            }
         }
 
         camera.update();
@@ -101,13 +103,20 @@ public class PlayState extends State {
         for (Branch branch : branches) {
             sb.draw(branch.getbranch(), branch.getPosition().x, branch.getPosition().y);
             //sb.draw(tube.getBottomTube(), tube.getPosBotTube().x, tube.getPosBotTube().y);
+            sb.draw(branch.getBird().getBirdTexture(),
+                    branch.getBird().getPosition().x,
+                    branch.getBird().getPosition().y); //draw bird
+            sb.draw(branch.getNuts().getNutsTexture(),
+                    branch.getNuts().getPosition().x,
+                    branch.getNuts().getPosition().y); //draw nuts
+            sb.draw(branch.getLadder().getLadderTexture(),
+                    branch.getLadder().getPosition().x,
+                    branch.getLadder().getPosition().y); //draw ladder
         }
 
         //sb.draw(branch.getbranch(), branch.getPosition().x, branch.getPosition().y); // draw branch;
-        sb.draw(jumper.getJumper(), jumper.getPosition().x, jumper.getPosition().y); //draw jumper
-        sb.draw(bird.getBird(), bird.getPosition().x, bird.getPosition().y); //draw bird
-        sb.draw(nuts.getNuts(),nuts.getPosition().x, nuts.getPosition().y); //draw nuts
-        sb.draw(ladder.getLadder(), ladder.getPosition().x, ladder.getPosition().y);
+        sb.draw(jumper.getJumperTexture(), jumper.getPosition().x, jumper.getPosition().y); //draw jumper
+
 
         sb.end();
 
@@ -116,12 +125,12 @@ public class PlayState extends State {
     @Override
     public void dispose() {
         jumper.dispose();
-        bird.dispose();
-        nuts.dispose();
+        //bird.dispose();
+        //nuts.dispose();
         for (Branch branch : branches) {
             branch.dispose();
         }
-        ladder.dispose();
+        //ladder.dispose();
         scoreFont.dispose();
         bg.dispose();
 

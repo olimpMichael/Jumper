@@ -13,7 +13,8 @@ import ru.michael.game.jumper.states.PlayState;
 public class MyGdxGame extends ApplicationAdapter {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 480;
-	public static final int HEIGHT_LEVEL = 200;
+	public static final int HEIGHT_LEVEL = 150;
+	public static final int HEIGHT_BRANCH = 44;
 	public static final String TITLE = "Jumper Demo";
 
 	private SpriteBatch batch;

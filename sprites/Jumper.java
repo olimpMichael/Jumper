@@ -49,7 +49,7 @@ public class Jumper {
 
     }
 
-    public Texture getJumper() {
+    public Texture getJumperTexture() {
         return texture;
         /*return birdAnimation.getFrame();*/
     }
