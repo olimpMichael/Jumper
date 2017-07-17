@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 import ru.michael.game.jumper.MyGdxGame;
+import ru.michael.game.jumper.states.PlayState;
 import sun.rmi.runtime.Log;
 
 /**
@@ -29,7 +30,7 @@ public class Jumper {
     private float padding;
     private boolean direction;
     private boolean nowJump;
-    private boolean climb;
+    public boolean climb;
     private float yBeforeJump;
 /*    private Animation birdAnimation;
     private Sound flap;*/
@@ -49,9 +50,12 @@ public class Jumper {
 
     }
 
+    public void setPositionX(float x){
+        position.x = x;
+    }
+
     public Texture getJumperTexture() {
         return texture;
-        /*return birdAnimation.getFrame();*/
     }
 
     public Vector3 getPosition(){
@@ -64,32 +68,32 @@ public class Jumper {
         } else nowJump = true;
         yBeforeJump = position.y;
         velosity.y=800; //присваиваем значение 250 координате y вектора скорости
-        //position.add(0,50,0);
-        //velosity.add(0, -30, 0);//добавляет значение к вектору y = y + GRAVITY
     }
 
     public void climb(){
-        climb = true;
+        if(climb){
+            return;
+        } else {
+            climb = true;
+            nowJump = false;
+        }
     }
 
     public void update(float dt){
         if (nowJump){
             System.out.println("1) velosity.y = " + velosity.y);
             gravity.set(0, -40, 0);
-           // gravity.scl(dt);
             velosity.add(gravity);//устанавливаем гравитацию равную -10
             temp.set(velosity);
             velosity.scl(dt);
 
-            System.out.println("2) velosity.y = " + velosity.y);
-
-            //velosity.scl(dt);//умножаем вектор скорости на скаляр промежутка времени
+            //System.out.println("2) velosity.y = " + velosity.y);
 
             position.add(0, velosity.y, 0); //устанавливаем новые координаты
             velosity.set(temp);
-            System.out.println("3) velosity.y = " + velosity.y);
-            System.out.println("3) position.y = " + position.y);
-            System.out.println("###########");
+            //System.out.println("3) velosity.y = " + velosity.y);
+            //System.out.println("3) position.y = " + position.y);
+            //System.out.println("###########");
 
 
            if (position.y <= yBeforeJump  ){
@@ -105,7 +109,23 @@ public class Jumper {
         }
 
         if (climb){
+            /*System.out.println("climb = " + climb);
+            System.out.println("position.y = " + position.y);
+            System.out.println("yBeforeClimb = " + yBeforeJump);
+            System.out.println("PlayState.BRANCHES_SPACING = " + PlayState.BRANCHES_SPACING);
+            System.out.println("yBeforeClimb + PlayState.BRANCHES_SPACING = " + (yBeforeJump + PlayState.BRANCHES_SPACING));*/
             position.add(0,MOVEMENT * dt,0);
+
+            if (position.y >= (yBeforeJump + PlayState.BRANCHES_SPACING + 41)  ){
+                System.out.println("STOP climb ");
+                //position.y = yBeforeJump + PlayState.BRANCHES_SPACING;
+                velosity.y = 0;
+                //position.y = yBeforeJump;
+                yBeforeJump = 0;
+                climb = false;
+                System.out.println("climb = " + climb);
+            }
+            return;
         }
 
 
@@ -119,10 +139,6 @@ public class Jumper {
         } else if (position.x <= padding){
             direction = true; //direction of movement to right
         }
-
-
-        //velosity.scl(1 / dt);//изменение скорости птицы при падении
-
 
         bounds.setPosition(position.x, position.y); //set position of Rectangle arround jumper
     }

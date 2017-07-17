@@ -20,10 +20,26 @@ public class Bird {
     private Random rand;
     private Rectangle boundBird;
 
-    public Bird(float y){
+    public Bird(float y, float ladderPosx){
         birdTexture = new Texture ("bird.png");
-        rand = new Random();
-        posBird = new Vector2(rand.nextInt(MyGdxGame.WIDTH), y + MyGdxGame.HEIGHT_BRANCH);
+        //float ladderPosx = 0;
+        setPosition(y, ladderPosx);
+        /*rand = new Random();
+        posBird = new Vector2(MyGdxGame.WIDTH_TRUNK + rand.nextInt(MyGdxGame.WIDTH -
+                MyGdxGame.WIDTH_TRUNK - MyGdxGame.WIDTH_TRUNK), y + MyGdxGame.HEIGHT_BRANCH);
+        boundBird = new Rectangle(posBird.x, posBird.y, birdTexture.getWidth(), birdTexture.getHeight());*/
+    }
+
+    public void setPosition(float y, float ladderPosX){
+        int x;
+        do {
+            rand = new Random();
+            x = MyGdxGame.WIDTH_TRUNK + rand.nextInt(MyGdxGame.WIDTH -
+                    MyGdxGame.WIDTH_TRUNK - MyGdxGame.WIDTH_TRUNK);
+            System.out.println("do {x = " + x + "} while (" + ladderPosX + ")");
+        } while (!(((float)x <= (float) (ladderPosX - 30.0))
+                || ((float)x >= (float) (ladderPosX + 30.0))));
+        posBird = new Vector2(x, y + MyGdxGame.HEIGHT_BRANCH);
         boundBird = new Rectangle(posBird.x, posBird.y, birdTexture.getWidth(), birdTexture.getHeight());
     }
 

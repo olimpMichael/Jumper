@@ -9,12 +9,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import ru.michael.game.jumper.sprites.Jumper;
 import ru.michael.game.jumper.states.GameStateManager;
 import ru.michael.game.jumper.states.PlayState;
+import ru.michael.game.jumper.states.SplashState;
 
 public class MyGdxGame extends ApplicationAdapter {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 480;
 	public static final int HEIGHT_LEVEL = 150;
 	public static final int HEIGHT_BRANCH = 44;
+	public static final int WIDTH_TRUNK = 50;
 	public static final String TITLE = "Jumper Demo";
 
 	private SpriteBatch batch;
@@ -25,8 +27,10 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		gsm = new GameStateManager();
 
+
+
 		Gdx.gl.glClearColor(1, 0, 0, 1); //clear our screen
-		gsm.push(new PlayState(gsm)); //create new screen menu and put it to Stack
+		gsm.push(new SplashState(gsm)); //create new screen menu and put it to Stack
 	}
 
 	@Override

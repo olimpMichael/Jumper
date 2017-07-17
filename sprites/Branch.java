@@ -27,12 +27,19 @@ public class Branch {
         leftBranchTexture = new Texture("leftBranch.png");
         //rand = new Random();
         leftPosBranch = new Vector2(20,y);
-        leftBoundBranch = new Rectangle(leftPosBranch.x, leftPosBranch.y, leftBranchTexture.getWidth(), leftBranchTexture.getHeight());
+        leftBoundBranch = new Rectangle(leftPosBranch.x, leftPosBranch.y,
+                leftBranchTexture.getWidth(), leftBranchTexture.getHeight());
 
-        bird = new Bird(y);
-        nuts = new Nuts(y);
+
         ladder = new Ladder(y);
+        nuts = new Nuts(y);
+        if(y == 20) {
+            y = -100;
+        }
+        bird = new Bird(y, ladder.getPosition().x);
     }
+
+
 
     public Ladder getLadder(){
         return ladder;
@@ -52,6 +59,16 @@ public class Branch {
 
     public Texture getbranch(){
         return leftBranchTexture;
+    }
+
+    public void reposition(float y){
+        leftPosBranch.set(20,y);
+        //set positions for Rectangles of Branch
+        leftBoundBranch.setPosition(leftPosBranch.x, leftPosBranch.y);
+
+        this.getLadder().setPosition(y);
+        this.getNuts().setPosition(y);
+        this.getBird().setPosition(y, this.getLadder().getPosition().x);
     }
 
     public boolean collides(Rectangle player){

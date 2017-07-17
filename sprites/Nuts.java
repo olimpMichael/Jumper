@@ -20,8 +20,19 @@ public class Nuts {
 
     public Nuts(float y){
         nutsTexture = new Texture("nuts.png");
+        setPosition(y);
+        /*rand = new Random();
+        posNuts = new Vector2(MyGdxGame.WIDTH_TRUNK + rand.nextInt(MyGdxGame.WIDTH -
+                MyGdxGame.WIDTH_TRUNK - MyGdxGame.WIDTH_TRUNK),
+                y + MyGdxGame.HEIGHT_BRANCH + rand.nextInt(MyGdxGame.HEIGHT_LEVEL));
+        boundNuts = new Rectangle(posNuts.x, posNuts.y, nutsTexture.getWidth(), nutsTexture.getHeight());*/
+    }
+
+    public void setPosition(float y){
         rand = new Random();
-        posNuts = new Vector2(rand.nextInt(MyGdxGame.WIDTH), y + MyGdxGame.HEIGHT_BRANCH + rand.nextInt(MyGdxGame.HEIGHT_LEVEL));
+        posNuts = new Vector2(MyGdxGame.WIDTH_TRUNK + rand.nextInt(MyGdxGame.WIDTH -
+                MyGdxGame.WIDTH_TRUNK - MyGdxGame.WIDTH_TRUNK),
+                y + MyGdxGame.HEIGHT_BRANCH + rand.nextInt(MyGdxGame.HEIGHT_LEVEL));
         boundNuts = new Rectangle(posNuts.x, posNuts.y, nutsTexture.getWidth(), nutsTexture.getHeight());
     }
 

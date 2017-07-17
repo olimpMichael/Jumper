@@ -20,8 +20,20 @@ public class Ladder {
 
     public Ladder(float y){
         ladderTexture = new Texture("ladder.png");
+        setPosition(y);
+        /*rand = new Random();
+        *//*posLadder = new Vector2(rand.nextInt(MyGdxGame.WIDTH),y - ladderTexture.getHeight() + 30);*//*
+        posLadder = new Vector2(MyGdxGame.WIDTH_TRUNK +
+                rand.nextInt(MyGdxGame.WIDTH - MyGdxGame.WIDTH_TRUNK - MyGdxGame.WIDTH_TRUNK),
+                y - ladderTexture.getHeight() + 30);
+        boundLadder = new Rectangle(posLadder.x, posLadder.y, ladderTexture.getWidth(), ladderTexture.getHeight());*/
+    }
+
+    public void setPosition(float y){
         rand = new Random();
-        posLadder = new Vector2(rand.nextInt(MyGdxGame.WIDTH),y - ladderTexture.getHeight() + 30);
+        posLadder = new Vector2(MyGdxGame.WIDTH_TRUNK + rand.nextInt(MyGdxGame.WIDTH -
+                MyGdxGame.WIDTH_TRUNK - MyGdxGame.WIDTH_TRUNK),
+                y - ladderTexture.getHeight() + 30);
         boundLadder = new Rectangle(posLadder.x, posLadder.y, ladderTexture.getWidth(), ladderTexture.getHeight());
     }
 
