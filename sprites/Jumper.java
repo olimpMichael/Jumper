@@ -32,6 +32,7 @@ public class Jumper {
     private boolean nowJump;
     public boolean climb;
     private float yBeforeJump;
+    private Animation jumperAnimation;
 /*    private Animation birdAnimation;
     private Sound flap;*/
 
@@ -41,12 +42,15 @@ public class Jumper {
         velosity = new Vector3(0, 0, 0);
         temp = new Vector3(0, 0, 0);
         gravity = new Vector3(0, -10, 0);
-        texture = new Texture("Squirrel.png");
-        bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
+        texture = new Texture("Squirrel-sprites.png");
+        jumperAnimation = new Animation(new TextureRegion(texture), 4, 2.8f);
+        bounds = new Rectangle(x, y, texture.getWidth() /4, texture.getHeight());
         direction = true;
         nowJump = false;
         climb = false;
         padding = 40;
+
+
 
     }
 
@@ -54,8 +58,8 @@ public class Jumper {
         position.x = x;
     }
 
-    public Texture getJumperTexture() {
-        return texture;
+    public TextureRegion getJumperTexture() {
+        return jumperAnimation.getFrame();
     }
 
     public Vector3 getPosition(){
@@ -63,7 +67,7 @@ public class Jumper {
     }
 
     public void jump(){
-        if(nowJump){
+        if(nowJump || climb){
             return;
         } else nowJump = true;
         yBeforeJump = position.y;
@@ -80,6 +84,7 @@ public class Jumper {
     }
 
     public void update(float dt){
+        jumperAnimation.update(dt);
         if (nowJump){
             System.out.println("1) velosity.y = " + velosity.y);
             gravity.set(0, -40, 0);
@@ -100,7 +105,6 @@ public class Jumper {
                position.y = yBeforeJump;
                velosity.y = 0;
                yBeforeJump = 0;
-
                nowJump = false;
             }
             MOVEMENT = 300;
@@ -120,7 +124,7 @@ public class Jumper {
                 System.out.println("STOP climb ");
                 //position.y = yBeforeJump + PlayState.BRANCHES_SPACING;
                 velosity.y = 0;
-                //position.y = yBeforeJump;
+                position.y = yBeforeJump + PlayState.BRANCHES_SPACING + 41;
                 yBeforeJump = 0;
                 climb = false;
                 System.out.println("climb = " + climb);
@@ -134,9 +138,16 @@ public class Jumper {
         } else {
             position.sub(MOVEMENT * dt, 0, 0 ); //устанавливаем новые координаты
         }
-        if (position.x >= MyGdxGame.WIDTH - texture.getWidth() - padding){
+        if ((position.x >= MyGdxGame.WIDTH - (texture.getWidth()/4) - padding) && !this.getJumperTexture().isFlipX()){
+            System.out.println("direction = " + direction + "Flip");
+            this.getJumperTexture().flip(true,false);
+
+
             direction = false; //direction of movement to left
-        } else if (position.x <= padding){
+        } else if ((position.x <= padding) && !direction){
+            System.out.println("direction = " + direction + "Flip");
+
+            this.getJumperTexture().flip(true,false);
             direction = true; //direction of movement to right
         }
 

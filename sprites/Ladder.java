@@ -34,7 +34,8 @@ public class Ladder {
         posLadder = new Vector2(MyGdxGame.WIDTH_TRUNK + rand.nextInt(MyGdxGame.WIDTH -
                 MyGdxGame.WIDTH_TRUNK - MyGdxGame.WIDTH_TRUNK),
                 y - ladderTexture.getHeight() + 30);
-        boundLadder = new Rectangle(posLadder.x, posLadder.y, ladderTexture.getWidth(), ladderTexture.getHeight());
+        //boundLadder = new Rectangle(posLadder.x, posLadder.y, ladderTexture.getWidth(), ladderTexture.getHeight());
+        boundLadder = new Rectangle(posLadder.x, posLadder.y, ladderTexture.getWidth(), ladderTexture.getHeight()/2);
     }
 
     public Vector2 getPosition(){

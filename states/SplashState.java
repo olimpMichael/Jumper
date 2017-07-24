@@ -17,11 +17,13 @@ public class SplashState extends State{
     private Texture background;
     private FreeTypeFontGenerator generator;
     private BitmapFont scoreFont;
+    private Texture logo;
 
     public SplashState(GameStateManager gsm) {
         super(gsm);
         camera.setToOrtho(false, MyGdxGame.WIDTH, MyGdxGame.HEIGHT);
         background = new Texture("bg-land.png");
+        logo = new Texture("Logo.png");
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ITCKRIST.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -50,16 +52,22 @@ public class SplashState extends State{
         sb.setProjectionMatrix(camera.combined);
         sb.begin();
         sb.draw(background, 0, 0);
+        sb.draw(logo,  (MyGdxGame.WIDTH - logo.getWidth())/2, 150 );
 
         scoreFont.draw(sb, "Tap to start Game",
                 camera.position.x  - 200,
-                camera.position.y + (MyGdxGame.HEIGHT / 2)-100);
+                MyGdxGame.HEIGHT -20);
+
+        scoreFont.draw(sb, "Lukky Squirrel",
+                MyGdxGame.WIDTH /2 - 150,
+                120);
         sb.end();
     }
 
     @Override
     public void dispose() {
         background.dispose();
+        logo.dispose();
         generator.dispose();
         scoreFont.dispose();
         System.out.println("SplashState Disposed");
