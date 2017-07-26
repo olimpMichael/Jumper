@@ -3,10 +3,13 @@ package ru.michael.game.jumper.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
 import ru.michael.game.jumper.MyGdxGame;
@@ -37,6 +40,8 @@ public class PlayState extends State {
     private BitmapFont scoreFont;
 
     private Array<Branch> branches;
+    private Sprite sprite;
+    private ShapeRenderer shapeRenderer;
 
 
 
@@ -56,6 +61,11 @@ public class PlayState extends State {
         parameter.borderColor = Color.BLACK;
         parameter.borderWidth = 0.8f;
         scoreFont = generator.generateFont(parameter); // font size 12 pixels
+
+
+        sprite = new Sprite();
+        shapeRenderer = new ShapeRenderer();
+
 
 
 
@@ -85,6 +95,8 @@ public class PlayState extends State {
         for (Branch branch : branches) {
             //Determines collides between jumper and bird
             if (branch.getBird().collides(jumper.getBounds())) {
+                jumper.setCurrentState(Jumper.LOSE);
+                jumper.update(dt);
                 gsm.set(new GameOver(gsm));
                 return;
             }
@@ -95,12 +107,18 @@ public class PlayState extends State {
                 score += 10;
             }
 
-            if(jumper.climb){
+            if(jumper.getCurrentState() == Jumper.CLIMB){
                 camera.position.y = jumper.getPosition().y + 220;
             }
 
+            if(jumper.getCurrentState() == Jumper.RUN){
+                //camera.position.x = jumper.getPosition().x;
+            }
+
             //Determines collides between jumper and ladders
-            if (Gdx.input.isTouched() && branch.getLadder().collides(jumper.getBounds()) && !jumper.climb) {
+            if (Gdx.input.isTouched() &&
+                    branch.getLadder().collides(jumper.getBounds()) &&
+                    jumper.getCurrentState() != Jumper.CLIMB) {
                 score += 10;
                 jumper.setPositionX(branch.getLadder().getPosition().x); //помещаем белку посередине лестницы
                 jumper.climb();
@@ -126,8 +144,17 @@ public class PlayState extends State {
 
     @Override
     public void render(SpriteBatch sb) {
+        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         sb.setProjectionMatrix(camera.combined); //установка матрицы проекций для нашей камеры
+
+
+
+        /*sprite.setBounds(jumper.getBounds().x, jumper.getBounds().y,
+                jumper.getBounds().getWidth(), jumper.getBounds().getHeight());*/
+
+
 
         sb.begin();
         sb.draw(bg, 0, camera.position.y - (camera.viewportHeight / 2));
@@ -145,9 +172,18 @@ public class PlayState extends State {
                     branch.getBird().getPosition().x,
                     branch.getBird().getPosition().y); //draw bird
         }
+
         sb.draw(jumper.getJumperTexture(), jumper.getPosition().x, jumper.getPosition().y); //draw jumper
+
+//        sprite.draw(sb);
+
         scoreFont.draw(sb, "Score: " + score, 40 ,camera.position.y + (MyGdxGame.HEIGHT / 2) - 10);
         sb.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.rect(jumper.getBounds().x, jumper.getBounds().y,
+                jumper.getBounds().getWidth(), jumper.getBounds().getHeight());
+        shapeRenderer.end();
     }
 
     @Override

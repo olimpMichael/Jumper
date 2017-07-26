@@ -20,24 +20,52 @@ public class Animation {
         for (int i = 0; i < frameCount; i++){
             frames.add(new TextureRegion(region, i * frameWidth, 0, frameWidth, region.getRegionHeight()));
         }
-        this.frameCount = frameCount;
-        maxFrameTime = cycleTime / frameCount;
+        //this.frameCount = frameCount;
+        this.frameCount = 4;
+        maxFrameTime = cycleTime / this.frameCount;
         frame = 0;
     }
-    public void update(float dt){
-        currentFrameTime += dt;
-        //если длительность отображения текущего кадра больше максимальной, то смена кадра
-        if (currentFrameTime > maxFrameTime){
-            frame++;
-            currentFrameTime = 0;
+    public void update(Jumper jumper, float dt) {
+        switch (jumper.getCurrentState()) {
+            case Jumper.RUN:
+                currentFrameTime += dt;
+                //если длительность отображения текущего кадра больше максимальной, то смена кадра
+                if (currentFrameTime > maxFrameTime) {
+                    frame++;
+                    currentFrameTime = 0;
+                }
+                if (frame >= frameCount)
+                    frame = 0;
+                break;
+
+            case Jumper.CLIMB:
+                frame = 4;
+                currentFrameTime = 0;
+                break;
+
+            case Jumper.JUMP:
+                frame = 5;
+                currentFrameTime = 0;
+                break;
+
+            case Jumper.LOSE:
+                frame = 6;
+                currentFrameTime = 0;
+                break;
         }
-        if (frame >= frameCount)
-            frame = 0;
     }
 
+
     //метод получения текущего кадра анимации
-    public  TextureRegion getFrame(){
-        return frames.get(frame);
+    public  TextureRegion getFrame(Jumper jumper){
+        TextureRegion region;
+        region = frames.get(frame);
+        if(!jumper.getDirection() && !region.isFlipX()){
+            region.flip(true, false);
+        } else if (jumper.getDirection() && region.isFlipX()){
+            region.flip(true, false);
+        }
+        return region;
     }
 }
 
