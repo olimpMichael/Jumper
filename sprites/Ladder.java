@@ -32,7 +32,7 @@ public class Ladder {
     public void setPosition(float y){
         rand = new Random();
         posLadder = new Vector2(MyGdxGame.WIDTH_TRUNK + rand.nextInt(MyGdxGame.WIDTH -
-                MyGdxGame.WIDTH_TRUNK - MyGdxGame.WIDTH_TRUNK),
+                MyGdxGame.WIDTH_TRUNK - MyGdxGame.WIDTH_TRUNK - 5),
                 y - ladderTexture.getHeight() + 30);
         //boundLadder = new Rectangle(posLadder.x, posLadder.y, ladderTexture.getWidth(), ladderTexture.getHeight());
         boundLadder = new Rectangle(posLadder.x, posLadder.y, ladderTexture.getWidth(), ladderTexture.getHeight()/2);
@@ -52,5 +52,10 @@ public class Ladder {
 
     public void dispose(){
         ladderTexture.dispose();
+    }
+
+    // This method use only test
+    public Rectangle getBounds(){
+        return boundLadder;
     }
 }

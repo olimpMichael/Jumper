@@ -1,15 +1,14 @@
 package ru.michael.game.jumper.sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Shape;
 
 import ru.michael.game.jumper.MyGdxGame;
 import ru.michael.game.jumper.states.PlayState;
-import sun.rmi.runtime.Log;
 
 /**
  * Created by michael on 17.06.2017.
@@ -31,8 +30,11 @@ public class Jumper {
     private Vector3 temp;
 
     private Rectangle bounds; //rectangle arround jumper
-    private Shape bounds_Jump_Climb;
+    private Rectangle bounds_Jump_Climb;
     private Texture texture;
+
+    private Sound soundJump, soundBird, soundCollapse;
+
 
 
     private float padding;
@@ -52,9 +54,11 @@ public class Jumper {
         gravity = new Vector3(0, -10, 0);
         texture = new Texture("Squirrel-sprites.png");
         jumperAnimation = new Animation(new TextureRegion(texture), 7, 0.8f);
-        //bounds = new Rectangle(x, y, texture.getWidth() /7, texture.getHeight());
-        //bounds_Jump_Climb = new Rectangle(x, y, texture.getWidth() /7 - 20, texture.getHeight());
-        bounds = new Rectangle(x - 50, y, texture.getWidth() /7 - 20, texture.getHeight());
+        bounds = new Rectangle(x, y, texture.getWidth() /7, texture.getHeight());
+        bounds_Jump_Climb = new Rectangle(x, y, texture.getWidth() /7 - 16, texture.getHeight());
+
+
+        //bounds = new Rectangle(x - 50, y, texture.getWidth() /7 - 20, texture.getHeight());
 
         //bounds.
         direction = true;
@@ -62,6 +66,14 @@ public class Jumper {
         currentState = RUN;
         //previousState = RUN;
         padding = 40;
+        soundJump = Gdx.audio.newSound(Gdx.files.internal("jump.mp3"));
+        soundBird = Gdx.audio.newSound(Gdx.files.internal("bird.mp3"));
+        soundCollapse = Gdx.audio.newSound(Gdx.files.internal("collapse.mp3"));
+
+
+
+        //soundJump.setVolume(0.6f);
+
 
 
 
@@ -73,6 +85,10 @@ public class Jumper {
 
     public void setCurrentState(int state){
         currentState = state;
+        if (state == LOSE){
+            soundCollapse.play(MyGdxGame.soundEffectsVolume);
+            soundBird.play(MyGdxGame.soundEffectsVolume);
+        }
     }
 
     public boolean getDirection(){
@@ -92,9 +108,12 @@ public class Jumper {
     }
 
     public void jump(){
-        if(currentState == JUMP || currentState == CLIMB){
+        if(currentState == JUMP || currentState == CLIMB || currentState == LOSE){
             return;
-        } else currentState = JUMP;
+        } else {
+            soundJump.play(MyGdxGame.soundEffectsVolume);
+            currentState = JUMP;
+        }
         yBeforeJump = position.y;
         velosity.y=800; //присваиваем значение 250 координате y вектора скорости
     }
@@ -155,10 +174,14 @@ public class Jumper {
                 break;
 
             case LOSE:
+                //position.add(MOVEMENT * dt,-200 * dt,0);
+                //position.add(0 ,-200 * dt,0);
+
                 break;
         }
 
         bounds.setPosition(position.x, position.y); //set position of Rectangle arround jumper
+        bounds_Jump_Climb.setPosition(position.x, position.y);
 
     }
 
@@ -182,12 +205,16 @@ public class Jumper {
     }
 
     public Rectangle getBounds(){
-
-        return bounds;
+        if (this.currentState == JUMP || this.currentState == CLIMB){
+            return bounds_Jump_Climb;
+        } else return bounds;
     }
 
     public void dispose(){
         texture.dispose();
+        soundBird.dispose();
+        soundCollapse.dispose();
+        soundJump.dispose();
     }
 
 }

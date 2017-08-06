@@ -12,14 +12,14 @@ import ru.michael.game.jumper.MyGdxGame;
  * Created by michael on 03.07.2017.
  */
 
-public class Nuts {
+public class GreenNuts {
     private Texture nutsTexture;
     private Vector2 posNuts;
     private Random rand;
     private Rectangle boundNuts;
 
-    public Nuts(float y){
-        nutsTexture = new Texture("nuts.png");
+    public GreenNuts(float y){
+        nutsTexture = new Texture("nuts-green.png");
         setPosition(y);
         /*rand = new Random();
         posNuts = new Vector2(MyGdxGame.WIDTH_TRUNK + rand.nextInt(MyGdxGame.WIDTH -

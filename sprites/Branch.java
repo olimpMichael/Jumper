@@ -17,6 +17,7 @@ public class Branch {
 
     private Bird bird;
     private Nuts nuts;
+    private GreenNuts greenNuts;
     private Ladder ladder;
     private Texture leftBranchTexture, rightBranchTexture;
     private Vector2 leftPosBranch, rightPosBranch;
@@ -33,6 +34,7 @@ public class Branch {
 
         ladder = new Ladder(y);
         nuts = new Nuts(y);
+        greenNuts = new GreenNuts(y);
         if(y == 20) {
             y = -100;
         }
@@ -53,6 +55,10 @@ public class Branch {
         return nuts;
     }
 
+    public GreenNuts getGreenNuts(){
+        return greenNuts;
+    }
+
     public Vector2 getPosition(){
         return leftPosBranch;
     }
@@ -68,6 +74,7 @@ public class Branch {
 
         this.getLadder().setPosition(y);
         this.getNuts().setPosition(y);
+        this.getGreenNuts().setPosition(y);
         this.getBird().setPosition(y, this.getLadder().getPosition().x);
     }
 
@@ -81,6 +88,7 @@ public class Branch {
         leftBranchTexture.dispose();
         bird.dispose();
         nuts.dispose();
+        greenNuts.dispose();
         ladder.dispose();
     }
 }

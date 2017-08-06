@@ -16,12 +16,23 @@ public class Animation {
 
     public Animation(TextureRegion region, int frameCount, float cycleTime){
         frames = new Array<TextureRegion>();
-        int frameWidth = region.getRegionWidth() / frameCount; //ширина кадра
-        for (int i = 0; i < frameCount; i++){
+        //int frameWidth = region.getRegionWidth() / frameCount; //ширина кадра
+        /*for (int i = 0; i < frameCount; i++){
+            frames.add(new TextureRegion(region, i * frameWidth, 0, frameWidth, region.getRegionHeight()));
+        }*/
+        this.frameCount = 4;
+
+        int frameWidth = (region.getRegionWidth() / frameCount) + 5; //ширина кадра
+        for (int i = 0; i < this.frameCount; i++){
             frames.add(new TextureRegion(region, i * frameWidth, 0, frameWidth, region.getRegionHeight()));
         }
-        //this.frameCount = frameCount;
-        this.frameCount = 4;
+
+        frames.add(new TextureRegion(region, 4 * frameWidth, 0, frameWidth, region.getRegionHeight()));
+        frames.add(new TextureRegion(region, 5 * frameWidth, 0, frameWidth - 20, region.getRegionHeight()));
+        frames.add(new TextureRegion(region, 6 * frameWidth - 20, 0, frameWidth-16, region.getRegionHeight()));
+
+
+
         maxFrameTime = cycleTime / this.frameCount;
         frame = 0;
     }
@@ -38,17 +49,17 @@ public class Animation {
                     frame = 0;
                 break;
 
-            case Jumper.CLIMB:
+            case Jumper.LOSE:
                 frame = 4;
                 currentFrameTime = 0;
                 break;
 
-            case Jumper.JUMP:
+            case Jumper.CLIMB:
                 frame = 5;
                 currentFrameTime = 0;
                 break;
 
-            case Jumper.LOSE:
+            case Jumper.JUMP:
                 frame = 6;
                 currentFrameTime = 0;
                 break;

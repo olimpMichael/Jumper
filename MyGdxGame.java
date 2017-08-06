@@ -2,6 +2,7 @@ package ru.michael.game.jumper;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,14 +19,22 @@ public class MyGdxGame extends ApplicationAdapter {
 	public static final int HEIGHT_BRANCH = 44;
 	public static final int WIDTH_TRUNK = 50;
 	public static final String TITLE = "Jumper Demo";
+	public static Music music;
+	public static float soundEffectsVolume = 0.4f;
 
 	private SpriteBatch batch;
 	private GameStateManager gsm;
+
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		gsm = new GameStateManager();
+		music = Gdx.audio.newMusic(Gdx.files.internal("BlueSka.mp3"));
+		music.setLooping(true); //бесконечный повтор воспроизведения
+		music.setVolume(0.2f); //10% громкости
+		//music.play();
+
 
 
 
@@ -44,5 +53,6 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		super.dispose();
+		music.dispose();
 	}
 }
